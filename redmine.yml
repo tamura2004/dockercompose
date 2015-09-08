@@ -1,0 +1,38 @@
+data00mysql:
+  image: busybox:buildroot-2014.02
+  volumes:
+    - /data/mysql:/var/lib/mysql
+data00redmine:
+  image: busybox:buildroot-2014.02
+  volumes:
+    # 添付ファイル保存先
+    - /data/redmine/files:/home/redmine/data/files
+    # プラグイン
+    - /data/redmine/plugins:/home/redmine/data/plugins
+    # テーマ
+    - /data/redmine/themes:/home/redmine/data/themes
+mysql:
+  image: mysql:5.6.24
+  environment:
+    MYSQL_ROOT_PASSWORD: password
+  volumes_from:
+    - data00mysql
+  ports:
+    - "3306:3306"
+redmine:
+  image: sameersbn/redmine:2.6.3
+  volumes_from:
+    - data00redmine
+    # - data00gitbucket
+  links:
+    - mysql:mysql
+  ports:
+    - "80:80"
+  environment:
+    # REDMINE_HTTPS: true
+    # REDMINE_RELATIVE_URL_ROOT: /redmine
+    DB_USER: root
+    DB_NAME: redmine
+    DB_PASS: password
+    # SMTP_USER: google@gmail.com
+    # SMTP_PASS: password

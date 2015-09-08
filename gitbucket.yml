@@ -1,0 +1,12 @@
+data00gitbucket:
+  image: busybox:buildroot-2014.02
+  volumes:
+    - /data/gitbucket:/gitbucket
+gitbucket:
+  image: f99aq8ove/gitbucket
+  ports:
+    - "29418:29418"
+    - "8080:8080"
+  volumes_from:
+    - data00gitbucket
+  command: java -jar /opt/gitbucket.war

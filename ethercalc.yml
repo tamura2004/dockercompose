@@ -1,0 +1,16 @@
+data00redis:
+  image: busybox:buildroot-2014.02
+  volumes:
+    - /data/redis:/data
+redis:
+  image: redis:3.0.3
+  volumes_from:
+    - data00redis
+  command: redis-server --appendonly yes
+ethercalc:
+  image: audreyt/ethercalc
+  ports:
+    - "8000:8000"
+  links:
+    - redis:redis
+  command: ["sh", "-c", "REDIS_HOST=$REDIS_PORT_6379_TCP_ADDR REDIS_PORT=$REDIS_PORT_6379_TCP_PORT pm2 start -x `which ethercalc` -- --cors && pm2 logs"]

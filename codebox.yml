@@ -1,0 +1,10 @@
+data00codebox:
+  image: busybox:buildroot-2014.02
+  volumes:
+    - /data/codebox:/workspace
+codebox:
+  image: 'javierprovecho/docker-codebox'
+  ports:
+    - 8000:8000
+  volumes_from:
+    - data00codebox

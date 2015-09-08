@@ -1,0 +1,4 @@
+manet:
+  image: earlyclaim/docker-manet
+  ports:
+    - "8891:8891"

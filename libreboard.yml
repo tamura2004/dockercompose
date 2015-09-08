@@ -1,0 +1,18 @@
+data00mongo:
+  image: busybox:buildroot-2014.02
+  volumes:
+    - /data/mongo:/data/db
+mongo:
+  image: mongo:3.1.5
+  volumes_from:
+    - data00mongo
+  command: mongod --smallfiles
+libreboard:
+  image: miurahr/libreboard:20150503
+  environment:
+    MONGO_URL: mongodb://mongo:27017/libreboard
+    ROOT_URL: http://example.com
+  links:
+    - mongo:mongo
+  ports:
+    - "5555:5555"
